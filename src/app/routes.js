@@ -7,4 +7,25 @@ module.exports = (app, passport) => {
             message: req.flash('localMessage')
         });
     })
+    app.post('/login',(req,res) =>{
+        
+    })
+
+    app.get('/signup',(req,res)=>{
+        res.render('signup', {
+            message: req.flash('signupMessage')
+        });
+    })
+
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect: '/profile',
+        failureRedirect: '/signup',
+        failureFlash: true
+    }))
+
+    app.get('/profile', (req,res) =>{
+        res.render('profile', {
+            user:req.user
+        })
+    })
 };

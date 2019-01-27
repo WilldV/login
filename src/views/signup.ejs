@@ -6,20 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <% include partials/head %>
-    <title>Login</title>
+    <title>Registro</title>
 </head>
 
-<body class="login">
+<body class="signup">
     <div class="container">
         <div class="col-sm-6 mx-auto">
             <div class="card mt-5">
                 <div class="card-body">
                     <h1 class="text-center">
-                        <span class="fa fa-sign-in-alt"></span> Login</h1>
+                        <span class="fa fa-users"></span> Registro</h1>
                     <% if(message.lenght > 0) {%>
-                    <div class="alert alert-danger">
-                        <%= message%>
-                    </div>
+                        <div class="alert alert-danger">
+                            <%= message%>
+                        </div>
                     <% } %>
                     <form action="/login" method="POST">
                         <div class="form-group">
@@ -34,8 +34,8 @@
                     </form>
                     <hr>
                     <div class="text-center">
-                        <p>¿No tienes cuenta? <a href="/signup">¡Regístrate!</a></p>
-                        <p>O regresa al <a href="/">inicio</a> :)</p>
+                        <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+                        <p>O regresa al <a href="/">inicio</a> :(</p>
                     </div>
                 </div>
             </div>
