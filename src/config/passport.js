@@ -25,8 +25,8 @@ module.exports = function(passport) {
             User.findOne({ 'local.email': email }, function (err, user) {
                 if (err) { return done(err); }
                 if (user) {
-                    return done(null, false, { errors: { 'singupMessage': 'El correo ya ha sido registrado anteriormente.' }});
-                } else {'El correo ya ha sido registrado anteriormente.'
+                    return done(null, false, {message: 'El correo ya ha sido registrado anteriormente.' });
+                } else {
                     newUser = new User();
                     newUser.local.email = email;
                     newUser.local.password = newUser.generateHash(password);
@@ -48,10 +48,10 @@ module.exports = function(passport) {
             User.findOne({ 'local.email': email }, function (err, user) {
                 if (err) { return done(err); }
                 if (!user) {
-                    return done(null, false, {errors: {'loginMessage': 'El usuario no existe...'}})
+                    return done(null, false, {message: 'El correo no existe...'})
                 } 
                 if(!user.validatePassword(password)){
-                    return done(null, false, {errors: {'loginMessage': 'Contraseña incorrecta...'}})
+                    return done(null, false, {message: 'Contraseña incorrecta...'})
                 }
                 return done(null, user);
             })

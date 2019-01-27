@@ -1,23 +1,24 @@
 module.exports = (app, passport) => {
 
-    app.get('/', (req,res ) =>{
+    app.get('/', (req, res) => {
         res.render('index');
     })
-    app.get('/login', (req,res) =>{
-        res.render('login',{
-            message: req.flash('localMessage')
+    app.get('/login', (req, res) => {
+        res.render('login', {
+            message: req.flash('error'),
+            email: ''
         });
     })
-   app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/profile',
-        //comprobar si puedo mandarle el email del usuario para que no tenga que volver a escribirlo
-        failureRedirect: '/login',
-        failureFlash: true  
-   }))
+    app.post('/login', passport.authenticate('local-login', {
+            successRedirect: '/profile',
+            failureRedirect: '/login',
+            failureFlash: true
+        })
+    )
 
-    app.get('/signup',(req,res)=>{
+    app.get('/signup', (req, res) => {
         res.render('signup', {
-            message: req.flash('signupMessage')
+            message: req.flash('error')
         });
     })
 
@@ -27,22 +28,23 @@ module.exports = (app, passport) => {
         failureFlash: true
     }))
 
-    app.get('/profile',isLogged ,(req,res) =>{
+    app.get('/profile', isLogged, (req, res) => {
         res.render('profile', {
-            user:req.user
-        })        
+            user: req.user
+        })
     })
 
-    app.get('/logout',(req,res) =>{
-       req.logout();
-       res.redirect('/');     
+    app.get('/logout', (req, res) => {
+        req.logout();
+        res.redirect('/');
     })
 
-    function isLogged(req, res, next){
-        if(req.isAuthenticated()){
+    function isLogged(req, res, next) {
+        if (req.isAuthenticated()) {
             return next();
-        }else{
+        } else {
             return res.redirect('/');
         }
     }
+
 };
