@@ -1,4 +1,4 @@
-const LocalStrategy = require('passport-local').Strategy;
+const local = require('passport-local').Strategy;
 
 const User = require('../app/models/user');
 
@@ -10,24 +10,25 @@ module.exports = function(passport) {
     passport.deserializeUser((id, done) => {
         User.findById(id, function (err, user) {
             done(err, user);
-        })
-    })
+        });
+    });
 
     //metodo para registrar
-    passport.use('local-signup', new LocalStrategy({
+    passport.use('local-signup', new local({
         usernameField: 'email',
-        password: 'password',
+        passwordField: 'password',
         passReqToCallBack: true
     },
-        function (req, email, password, done) {
+        function (email, password, done) {
+            console.log(done);
+            
             User.findOne({ 'local.email': email }, function (err, user) {
                 if (err) { return done(err); }
                 if (user) {
-                    return done(null, false, req.flash('singupMessage', 'El correo ya ha sido registrado anteriormente.'))
-                } else {
+                    return done(null, false, { errors: { 'singupMessage': 'El correo ya ha sido registrado anteriormente.' }});
+                } else {'El correo ya ha sido registrado anteriormente.'
                     newUser = new User();
                     newUser.local.email = email;
-                    newUser.local.password = password;
                     newUser.local.password = newUser.generateHash(password);
                     newUser.save(function (err) {
                         if (err) { throw err; }
@@ -38,19 +39,19 @@ module.exports = function(passport) {
         }
     ))
     //login
-    passport.use('local-login', new LocalStrategy({
+    passport.use('local-login', new local({
         usernameField: 'email',
-        password: 'password',
+        passwordField: 'password',
         passReqToCallBack: true
     },
-        function (req, email, password, done) {
+        function (email, password, done) {
             User.findOne({ 'local.email': email }, function (err, user) {
                 if (err) { return done(err); }
                 if (!user) {
-                    return done(null, false, req.flash('loginMessage', 'El usuario no existe...'))
+                    return done(null, false, {errors: {'loginMessage': 'El usuario no existe...'}})
                 } 
-                if(!user.vaidatePassword(password)){
-                    return done(null, false, req.flash('loginMessage', 'Contraseña incorrecta'))
+                if(!user.validatePassword(password)){
+                    return done(null, false, {errors: {'loginMessage': 'Contraseña incorrecta...'}})
                 }
                 return done(null, user);
             })

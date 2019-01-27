@@ -3,7 +3,7 @@ const path = require('path');
 //odm para mongoDB
 const mongoose = require('mongoose');
 //autenticacion de usuarios
-const passport = require('passport');
+var passport = require('passport');
 //guardar mensajes por sesiones
 const flash = require('connect-flash');
 //administar peticiones

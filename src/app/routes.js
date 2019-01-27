@@ -1,4 +1,5 @@
 module.exports = (app, passport) => {
+    
     app.get('/', (req,res ) =>{
         res.render('index');
     })
@@ -7,9 +8,11 @@ module.exports = (app, passport) => {
             message: req.flash('localMessage')
         });
     })
-    app.post('/login',(req,res) =>{
-        
-    })
+   app.post('/login', passport.authenticate('local-login', {
+        successRedirect: '/profile',
+        failureRedirect: '/login',
+        failureFlash: true  
+   }))
 
     app.get('/signup',(req,res)=>{
         res.render('signup', {
@@ -26,6 +29,7 @@ module.exports = (app, passport) => {
     app.get('/profile', (req,res) =>{
         res.render('profile', {
             user:req.user
-        })
+            
+        })        
     })
 };
