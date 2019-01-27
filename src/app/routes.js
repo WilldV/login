@@ -1,5 +1,5 @@
 module.exports = (app, passport) => {
-    
+
     app.get('/', (req,res ) =>{
         res.render('index');
     })
@@ -10,6 +10,7 @@ module.exports = (app, passport) => {
     })
    app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/profile',
+        //comprobar si puedo mandarle el email del usuario para que no tenga que volver a escribirlo
         failureRedirect: '/login',
         failureFlash: true  
    }))
@@ -26,10 +27,22 @@ module.exports = (app, passport) => {
         failureFlash: true
     }))
 
-    app.get('/profile', (req,res) =>{
+    app.get('/profile',isLogged ,(req,res) =>{
         res.render('profile', {
             user:req.user
-            
         })        
     })
+
+    app.get('/logout',(req,res) =>{
+       req.logout();
+       res.redirect('/');     
+    })
+
+    function isLogged(req, res, next){
+        if(req.isAuthenticated()){
+            return next();
+        }else{
+            return res.redirect('/');
+        }
+    }
 };
