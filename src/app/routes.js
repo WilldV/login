@@ -3,14 +3,13 @@ module.exports = (app, passport) => {
     app.get('/', (req, res) => {
         res.render('index');
     })
-    app.get('/login', (req, res) => {
+    app.get('/login', (req, res) => {        
         res.render('login', {
             message: req.flash('error'),
-            email: ''
         });
     })
     app.post('/login', passport.authenticate('local-login', {
-            successRedirect: '/profile',
+            successRedirect: '/profile',    
             failureRedirect: '/login',
             failureFlash: true
         })
